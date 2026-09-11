@@ -1,5 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { StyleSheet, TextInput, View } from 'react-native'
 import { AppText } from '@/components/atoms/app-text'
 import { IconButton } from '@/components/atoms/icon-button'
 import { AppCard } from '@/components/molecules/app-card'
@@ -7,6 +5,8 @@ import { CurrencyPicker } from '@/components/molecules/currency-picker'
 import { Currency, convert } from '@/data/currencies'
 import { formatNumber, parseNumber } from '@/lib/format'
 import { colors, fonts, spacing } from '@/theme'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { StyleSheet, TextInput, View } from 'react-native'
 
 type ConverterCardProps = {
   from: Currency
@@ -14,9 +14,19 @@ type ConverterCardProps = {
   amount: string
   onChangeAmount: (amount: string) => void
   onSwap: () => void
+  onSelectFrom: () => void
+  onSelectTo: () => void
 }
 
-export function ConverterCard({ from, to, amount, onChangeAmount, onSwap }: ConverterCardProps) {
+export function ConverterCard({
+  from,
+  to,
+  amount,
+  onChangeAmount,
+  onSwap,
+  onSelectFrom,
+  onSelectTo,
+}: ConverterCardProps) {
   const converted = convert(parseNumber(amount), from, to)
 
   return (
@@ -27,11 +37,11 @@ export function ConverterCard({ from, to, amount, onChangeAmount, onSwap }: Conv
       </View>
 
       <View style={styles.pickers}>
-        <CurrencyPicker currency={from} />
+        <CurrencyPicker currency={from} onPress={onSelectFrom} />
         <IconButton onPress={onSwap}>
           <MaterialCommunityIcons name="swap-horizontal" size={20} color={colors.gold} />
         </IconButton>
-        <CurrencyPicker currency={to} reverse />
+        <CurrencyPicker currency={to} reverse onPress={onSelectTo} />
       </View>
 
       <TextInput
