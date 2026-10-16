@@ -11,6 +11,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.joaotelles.exchanger",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
@@ -23,6 +24,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "23f977e8-89f2-48e5-941d-1bd0980995db"
+      }
     }
   }
 }
