@@ -1,16 +1,26 @@
+import { colors, radius } from '@/theme'
 import { ReactNode } from 'react'
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native'
-import { colors, radius } from '@/theme'
 
 type IconButtonProps = {
   children: ReactNode
   onPress?: () => void
   style?: StyleProp<ViewStyle>
+  accessibilityRole?: 'button'
+  accessibilityLabel?: string
 }
 
-export function IconButton({ children, onPress, style }: IconButtonProps) {
+export function IconButton({
+  children,
+  onPress,
+  style,
+  accessibilityRole,
+  accessibilityLabel,
+}: IconButtonProps) {
   return (
     <Pressable
+      accessibilityRole={accessibilityRole}
+      accessibilityLabel={accessibilityLabel}
       onPress={onPress}
       style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}>
       {children}

@@ -5,6 +5,9 @@ export type DiaryRecord = {
   date: string
   description: string
   rate: number
+  amount: number
+  currency: string
+  direction: 'buy' | 'sell'
 }
 
 type PeriodData = {
@@ -46,8 +49,24 @@ export const history: Record<Period, PeriodData> = {
 }
 
 export const diaryEntries: DiaryRecord[] = [
-  { id: '1', date: '28 jul', description: 'comprou US$ 500', rate: 5.142 },
-  { id: '2', date: '03 jun', description: 'comprou US$ 300', rate: 5.021 },
+  {
+    id: '1',
+    date: '28 jul',
+    description: 'Compra para viagem',
+    amount: 500,
+    currency: 'USD',
+    direction: 'buy',
+    rate: 5.142,
+  },
+  {
+    id: '2',
+    date: '03 jun',
+    description: 'Reserva de emergência',
+    amount: 300,
+    currency: 'USD',
+    direction: 'buy',
+    rate: 5.021,
+  },
 ]
 
 export function seriesFor(period: Period, rate: number) {

@@ -1,8 +1,40 @@
+import {
+    AR,
+    AU,
+    BR,
+    CA,
+    CH,
+    CL,
+    CN,
+    EU,
+    GB,
+    IN,
+    JP,
+    KR,
+    MX,
+    US,
+    ZA,
+} from 'country-flag-icons/string/3x2'
 import { StyleSheet, View } from 'react-native'
 import { SvgXml } from 'react-native-svg'
-import { BR, EU, GB, JP, US } from 'country-flag-icons/string/3x2'
 
-const flags: Record<string, string> = { BR, EU, GB, JP, US }
+const flags: Record<string, string> = {
+  AR,
+  AU,
+  BR,
+  CA,
+  CH,
+  CL,
+  CN,
+  EU,
+  GB,
+  IN,
+  JP,
+  KR,
+  MX,
+  US,
+  ZA,
+}
 
 type FlagProps = {
   country: string

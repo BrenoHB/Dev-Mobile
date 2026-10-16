@@ -6,6 +6,10 @@
     "orientation": "portrait",
     "scheme": "exchanger",
     "userInterfaceStyle": "dark",
+    "backgroundColor": "#0A1524",
+    "splash": {
+      "backgroundColor": "#0A1524"
+    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true

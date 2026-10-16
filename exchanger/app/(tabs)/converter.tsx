@@ -5,16 +5,21 @@ import { AppShell } from '@/components/organisms/app-shell'
 import { ConverterCard } from '@/components/organisms/converter-card'
 import { RateCard } from '@/components/organisms/rate-card'
 import { useCurrency } from '@/context/currency-context'
-import { currencies, Currency, favorites, getCurrency } from '@/data/currencies'
+import { convert, currencies, Currency, favorites, getCurrency, pairRate } from '@/data/currencies'
+import { formatNumber, parseNumber } from '@/lib/format'
 import { colors, spacing } from '@/theme'
 import { Feather } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import { useState } from 'react'
-import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import { Modal, Pressable, ScrollView, Share, StyleSheet, View } from 'react-native'
 
 export default function Converter() {
   const { from, to, setFrom, setTo, swap } = useCurrency()
   const [amount, setAmount] = useState('1.000,00')
   const [picker, setPicker] = useState<'from' | 'to' | null>(null)
+  const numericAmount = parseNumber(amount)
+  const convertedAmount = convert(numericAmount, from, to)
+  const rate = pairRate(from, to)
 
   const selectCurrency = (currency: Currency) => {
     if (picker === 'from') setFrom(currency)
@@ -22,8 +27,14 @@ export default function Converter() {
     setPicker(null)
   }
 
+  const shareConversion = async () => {
+    await Share.share({
+      message: `${formatNumber(numericAmount)} ${from.code} = ${formatNumber(convertedAmount)} ${to.code}\nCotação: 1 ${from.code} = ${formatNumber(rate, 4)} ${to.code}`,
+    })
+  }
+
   return (
-    <AppShell>
+    <AppShell showLogout>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <AppText variant="caption" color={colors.gold}>
@@ -40,7 +51,52 @@ export default function Converter() {
           onSwap={swap}
           onSelectFrom={() => setPicker('from')}
           onSelectTo={() => setPicker('to')}
+          onClear={() => setAmount('')}
+          onShare={shareConversion}
         />
+
+        <View style={styles.quickSection}>
+          <View style={styles.sectionHeader}>
+            <View>
+              <AppText variant="caption">Valores rápidos</AppText>
+              <AppText color={colors.textMuted} style={styles.helperText}>
+                Toque para testar outro valor
+              </AppText>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Criar alerta para este par"
+              onPress={() => router.push('/alerts')}
+              style={({ pressed }) => [styles.alertLink, pressed && styles.pressed]}>
+              <Feather name="bell" size={15} color={colors.gold} />
+              <AppText style={styles.alertLinkText}>Criar alerta</AppText>
+            </Pressable>
+          </View>
+          <View style={styles.quickValues}>
+            {[100, 250, 500, 1000].map(value => (
+              <Pressable
+                key={value}
+                accessibilityRole="button"
+                accessibilityLabel={`Converter ${value} ${from.code}`}
+                onPress={() => setAmount(formatNumber(value))}
+                style={({ pressed }) => [styles.quickValue, pressed && styles.pressed]}>
+                <AppText variant="label">{formatNumber(value)}</AppText>
+                <AppText variant="caption">{from.code}</AppText>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.breakdown}>
+          <View style={styles.breakdownRow}>
+            <AppText color={colors.textMuted}>Valor convertido</AppText>
+            <AppText variant="label">{formatNumber(convertedAmount)} {to.code}</AppText>
+          </View>
+          <View style={styles.breakdownRow}>
+            <AppText color={colors.textMuted}>Taxa aplicada</AppText>
+            <AppText variant="label">1 {from.code} = {formatNumber(rate, 4)} {to.code}</AppText>
+          </View>
+        </View>
 
         <RateCard from={from} to={to} />
 
@@ -127,6 +183,61 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     marginBottom: spacing.md,
+  },
+  quickSection: {
+    gap: spacing.md,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  helperText: {
+    marginTop: spacing.sm,
+    fontSize: 12,
+  },
+  alertLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: spacing.md,
+    backgroundColor: colors.surface,
+  },
+  alertLinkText: {
+    color: colors.gold,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  quickValues: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  quickValue: {
+    flex: 1,
+    minHeight: 58,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 3,
+    borderRadius: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.surfaceBorder,
+    backgroundColor: colors.surface,
+  },
+  breakdown: {
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: spacing.md,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.surfaceBorder,
+  },
+  breakdownRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
   },
   favorites: {
     flexDirection: 'row',

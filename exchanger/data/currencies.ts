@@ -12,6 +12,16 @@ export const currencies: Currency[] = [
   { code: 'EUR', name: 'Euro', country: 'EU', symbol: '€', rate: 5.671 },
   { code: 'GBP', name: 'Libra', country: 'GB', symbol: '£', rate: 6.632 },
   { code: 'JPY', name: 'Iene', country: 'JP', symbol: '¥', rate: 0.0353 },
+  { code: 'CAD', name: 'Dólar canadense', country: 'CA', symbol: 'CA$', rate: 3.76 },
+  { code: 'AUD', name: 'Dólar australiano', country: 'AU', symbol: 'A$', rate: 3.45 },
+  { code: 'CHF', name: 'Franco suíço', country: 'CH', symbol: 'CHF', rate: 6.04 },
+  { code: 'MXN', name: 'Peso mexicano', country: 'MX', symbol: 'MX$', rate: 0.31 },
+  { code: 'ARS', name: 'Peso argentino', country: 'AR', symbol: 'ARS$', rate: 0.005 },
+  { code: 'CLP', name: 'Peso chileno', country: 'CL', symbol: 'CLP$', rate: 0.006 },
+  { code: 'CNY', name: 'Yuan chinês', country: 'CN', symbol: '¥', rate: 0.72 },
+  { code: 'KRW', name: 'Won sul-coreano', country: 'KR', symbol: '₩', rate: 0.0038 },
+  { code: 'INR', name: 'Rúpia indiana', country: 'IN', symbol: '₹', rate: 0.062 },
+  { code: 'ZAR', name: 'Rand sul-africano', country: 'ZA', symbol: 'R', rate: 0.29 },
 ]
 
 export const favorites = ['USD', 'EUR', 'GBP', 'JPY']

@@ -1,36 +1,40 @@
-import { Feather } from '@expo/vector-icons'
-import { StyleSheet, View } from 'react-native'
 import { AppText } from '@/components/atoms/app-text'
 import { AppCard } from '@/components/molecules/app-card'
 import { formatNumber } from '@/lib/format'
 import { colors, fonts, radius, spacing } from '@/theme'
+import { Feather } from '@expo/vector-icons'
+import { StyleSheet, View } from 'react-native'
 
 type TrendCardProps = {
   currencyName: string
   change: number
+  periodLabel: string
 }
 
-export function TrendCard({ currencyName, change }: TrendCardProps) {
+export function TrendCard({ currencyName, change, periodLabel }: TrendCardProps) {
+  const isPositive = change >= 0
+  const accent = isPositive ? colors.positive : colors.negative
+
   return (
     <AppCard style={styles.card}>
-      <View style={styles.badge}>
-        <Feather name="trending-up" size={26} color={colors.positive} />
+      <View style={[styles.badge, { backgroundColor: `${accent}1F` }]}>
+        <Feather name={isPositive ? 'trending-up' : 'trending-down'} size={26} color={accent} />
       </View>
 
-      <AppText variant="title" color={colors.positive} style={styles.title}>
-        Tendência de alta
+      <AppText variant="title" color={accent} style={styles.title}>
+        {isPositive ? 'Tendência de alta' : 'Tendência de baixa'}
       </AppText>
 
       <AppText color={colors.textMuted} style={styles.description}>
-        {`${currencyName} em movimento de subida nos últimos 7 dias`}
+        {`${currencyName} em movimento de ${isPositive ? 'subida' : 'queda'} nos últimos ${periodLabel}`}
       </AppText>
 
-      <AppText color={colors.gold} style={styles.value}>
-        {`+${formatNumber(change, 1)}%`}
+      <AppText color={accent} style={styles.value}>
+        {`${change >= 0 ? '+' : ''}${formatNumber(change, 1)}%`}
       </AppText>
 
       <AppText color={colors.textMuted} style={styles.legend}>
-        vs. média móvel de 7 dias
+        vs. média do período
       </AppText>
     </AppCard>
   )
@@ -47,7 +51,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: `${colors.positive}1F`,
   },
   title: {
     fontSize: 22,

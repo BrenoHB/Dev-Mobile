@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
 import { AppText } from '@/components/atoms/app-text'
 import { PeriodSelector } from '@/components/molecules/period-selector'
 import { AppShell } from '@/components/organisms/app-shell'
@@ -10,6 +8,8 @@ import { useCurrency } from '@/context/currency-context'
 import { pairRate } from '@/data/currencies'
 import { Period, diaryEntries, history, periodChange, seriesFor, today } from '@/data/history'
 import { colors, spacing } from '@/theme'
+import { useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 export default function Historico() {
   const { from, to } = useCurrency()
@@ -18,7 +18,7 @@ export default function Historico() {
   const values = seriesFor(period, pairRate(from, to))
 
   return (
-    <AppShell>
+    <AppShell showLogout>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <AppText variant="caption" color={colors.gold}>
